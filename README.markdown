@@ -19,8 +19,8 @@ welcome!
 
 After compiling the source, you can execute the utility by typing:
 
- scala FlickrMemories.App <your Flickr NSID> <date since> <date until> >pictures.html
+    scala FlickrMemories.App <your Flickr NSID> <date since> <date until> >pictures.html
 
 E.g.:
 
- scala FlickrMemories.App 24881879@N00 2009-11 2010-01 > pictures.html
+    scala FlickrMemories.App 24881879@N00 2009-11 2010-01 > pictures.html
