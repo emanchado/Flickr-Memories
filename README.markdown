@@ -7,6 +7,9 @@ the point of writing it in the first place was learning some Scala, so
 don't expect (1) idiomatic Scala code you can learn from, or (2) a
 polished/well-maintained code.
 
+BTW, I know there's already a service that does something similar,
+probably much better, but as I said I wanted to learn some Scala ;-)
+
 To run this, you'll need
 [scalaj-http](https://github.com/scalaj/scalaj-http).
 
