@@ -1,5 +1,8 @@
 import scalaj.http.Http
 import scala.xml._
+// JES. US. CHRIST.
+import java.util.{Calendar,Date}
+import java.text.SimpleDateFormat
 
 package FlickrMemories {
   class Photo(id: String, secret: String, userId: String,
@@ -15,8 +18,9 @@ package FlickrMemories {
   }
 
   class SearchEngine {
-    private def rawSearchResults(userId: String, dateSpecSince: String,
-                                 dateSpecUntil: String) : String = {
+    private def rawSearchByUserAndDateRange(userId: String,
+                                            dateSpecSince: String,
+                                            dateSpecUntil: String) : String = {
       return Http("http://api.flickr.com/services/rest").
                 param("method",         "flickr.photos.search").
                 param("api_key",        App.API_KEY).
@@ -25,10 +29,11 @@ package FlickrMemories {
                 param("max_taken_date", dateSpecUntil).asString
     }
 
-    def listSearchResults(userId: String, dateSpecSince: String,
-                          dateSpecUntil: String) : Seq[Photo] = {
-      val dom = XML.loadString(rawSearchResults(userId, dateSpecSince,
-                                                        dateSpecUntil))
+    def searchByUserAndDateRange(userId: String, dateSpecSince: String,
+                                 dateSpecUntil: String) : Seq[Photo] = {
+      val dom = XML.loadString(rawSearchByUserAndDateRange(userId,
+                                                           dateSpecSince,
+                                                           dateSpecUntil))
       return (dom \\ "photo").map {p => new Photo((p \ "@id").text,
                                                   (p \ "@secret").text,
                                                   (p \ "@owner").text,
@@ -41,24 +46,41 @@ package FlickrMemories {
   object App {
     val API_KEY = "30c195ccce757cd281132f0bef44de0d"
 
+    def findThisWeekLastYear(referenceDate: Date) : (Date, Date) = {
+      val c = Calendar.getInstance
+      c.setTime(referenceDate)
+      c.add(Calendar.YEAR, -1)
+      while (c.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+        c.add(Calendar.DATE, -1)
+      }
+      val startDate = c.getTime
+      c.add(Calendar.DATE, 7)
+      val endDate = c.getTime
+      return (startDate, endDate)
+    }
+
     def main(args: Array[String]) {
-      val userId    = args(0)             // 24881879@N00
-      val dateSince = args(1)
-      val dateUntil = args(2)
+      val userId        = args(0)             // 24881879@N00
+      var referenceDate = new Date        // today
+      val formatter     = new SimpleDateFormat("yyyy-MM-dd")
+      if (args.size > 1) {
+        referenceDate = formatter.parse(args(1))
+      }
 
       val engine = new SearchEngine()
 
+      val (dateSince, dateUntil) = findThisWeekLastYear(referenceDate)
+      val dateSinceString = formatter.format(dateSince)
+      val dateUntilString = formatter.format(dateUntil)
       println("<!DOCTYPE html>")
       println("<head><title>Flickr pictures from " + dateSince + " until " +
               dateUntil + "</title></head>")
       println("<body>")
-      println("<ul>")
-      for (photo <- engine.listSearchResults(userId, dateSince, dateUntil)) {
+      for (photo <- engine.searchByUserAndDateRange(userId, dateSinceString, dateUntilString)) {
         println("<a href=\"" + photo.pageUrl + "\">")
         println("<img src=\"" + photo.imageUrl + "\" />")
         println("</a>")
       }
-      println("</ul>")
       println("</body>")
     }
   }
