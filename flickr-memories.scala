@@ -3,7 +3,7 @@ import scala.xml._
 
 package FlickrMemories {
   class Photo(id: String, secret: String, userId: String,
-              farmId: String, serverId: String) {
+              farmId: String, serverId: String, title: String) {
     def imageUrl : String = {
       return "http://farm" + farmId + ".static.flickr.com/" +
                 serverId + "/" + id + "_" + secret + ".jpg"
@@ -29,11 +29,12 @@ package FlickrMemories {
                           dateSpecUntil: String) : Seq[Photo] = {
       val dom = XML.loadString(rawSearchResults(userId, dateSpecSince,
                                                         dateSpecUntil))
-      return (dom \\ "photo").map {p => new Photo((p \\ "@id").text,
-                                                  (p \\ "@secret").text,
-                                                  (p \\ "@owner").text,
-                                                  (p \\ "@farm").text,
-                                                  (p \\ "@server").text)}
+      return (dom \\ "photo").map {p => new Photo((p \ "@id").text,
+                                                  (p \ "@secret").text,
+                                                  (p \ "@owner").text,
+                                                  (p \ "@farm").text,
+                                                  (p \ "@server").text,
+                                                  (p \ "@title").text)}
     }
   }
 
