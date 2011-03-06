@@ -3,6 +3,8 @@ import scala.xml._
 // JES. US. CHRIST.
 import java.util.{Calendar,Date}
 import java.text.SimpleDateFormat
+// Template system
+import biz.source_code.miniTemplator.MiniTemplator
 
 package FlickrMemories {
   class Photo(var id: String, var secret: String, var userId: String,
@@ -67,7 +69,8 @@ package FlickrMemories {
   }
 
   object App {
-    val API_KEY = "30c195ccce757cd281132f0bef44de0d"
+    val API_KEY       = "30c195ccce757cd281132f0bef44de0d"
+    val TEMPLATE_PATH = "template.html"
 
     def findThisWeekLastYear(referenceDate: Date) : (Date, Date) = {
       val c = Calendar.getInstance
@@ -83,28 +86,33 @@ package FlickrMemories {
     }
 
     def main(args: Array[String]) {
-      val userId        = args(0)             // 24881879@N00
-      var referenceDate = new Date        // today
-      val formatter     = new SimpleDateFormat("yyyy-MM-dd")
+      val userId           = args(0)         // 24881879@N00
+      var referenceDate    = new Date        // today by default
+      val rfc3339Formatter = new SimpleDateFormat("yyyy-MM-dd")
       if (args.size > 1) {
-        referenceDate = formatter.parse(args(1))
+        referenceDate = rfc3339Formatter.parse(args(1))
       }
 
       val engine = new SearchEngine()
 
       val (dateSince, dateUntil) = findThisWeekLastYear(referenceDate)
-      val dateSinceString = formatter.format(dateSince)
-      val dateUntilString = formatter.format(dateUntil)
-      println("<!DOCTYPE html>")
-      println("<head><title>Flickr pictures from " + dateSince + " until " +
-              dateUntil + "</title></head>")
-      println("<body>")
+      val dateSinceString = rfc3339Formatter.format(dateSince)
+      val dateUntilString = rfc3339Formatter.format(dateUntil)
+
+      val t = new MiniTemplator(TEMPLATE_PATH)
+      val niceDateFormatter = new SimpleDateFormat("MMM d")
+      val yearDateFormatter = new SimpleDateFormat("yyyy")
+      t.setVariable("dateSince", niceDateFormatter.format(dateSince))
+      t.setVariable("yearSince", yearDateFormatter.format(dateSince))
+      t.setVariable("dateUntil", niceDateFormatter.format(dateUntil))
       for (photo <- engine.searchByUserAndDateRange(userId, dateSinceString, dateUntilString)) {
-        println("<a href=\"" + photo.pageUrl + "\">")
-        println("<img src=\"" + photo.imageUrl + "\" />")
-        println("</a>")
+        t.setVariable("pageUrl",     photo.pageUrl)
+        t.setVariable("imageUrl",    photo.imageUrl)
+        t.setVariable("title",       photo.title)
+        t.setVariable("description", photo.description)
+        t.addBlock("photo")
       }
-      println("</body>")
+      println(t.generateOutput)
     }
   }
 }

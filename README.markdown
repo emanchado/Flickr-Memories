@@ -12,7 +12,8 @@ BTW, I know there's already a service that does something similar,
 probably much better, but as I said I wanted to learn some Scala ;-)
 
 To run this, you'll need
-[scalaj-http](https://github.com/scalaj/scalaj-http).
+[scalaj-http](https://github.com/scalaj/scalaj-http) and
+[MiniTemplator](http://www.source-code.biz/MiniTemplator/).
 
 Any comments, particularly about the Scala code or nice tools I should
 be using (build system, documentation, unit testing, etc.) more than
