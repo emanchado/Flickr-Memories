@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Weekly Flickr pictures from ${dateSince} until ${dateUntil}</title>
+    <style>
+      body {
+        text-align: center;
+        font-family: Georgia, Verdana, Helvetica, sans-serif;
+      }
+
+      div.photo {
+        margin-bottom: 5ex;
+      }
+      div.description {
+        max-width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        font-family: Georgia, Verdana, Helvetica, sans-serif;
+        color: gray;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Week ${dateSince} - ${dateUntil}, ${yearSince}</h1>
+<!-- $BeginBlock photo -->
+    <div class="photo">
+      <a href="${pageUrl}">
+        <img alt="${title}" src="${imageUrl}" />
+      </a>
+      <div class="description">
+        <em>${description}</em>
+      </div>
+    </div>
+<!-- $EndBlock photo -->
+  </body>
+</html>

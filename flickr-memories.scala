@@ -117,12 +117,48 @@ package FlickrMemories {
       return (startDate, endDate)
     }
 
+    def htmlForPhotos(photos: Seq[Photo], dateSince: Date, dateUntil: Date) : String = {
+      val t = new MiniTemplator(TEMPLATE_PATH)
+      val niceDateFormatter = new SimpleDateFormat("MMM d")
+      val yearDateFormatter = new SimpleDateFormat("yyyy")
+      t.setVariable("dateSince", niceDateFormatter.format(dateSince))
+      t.setVariable("yearSince", yearDateFormatter.format(dateSince))
+      t.setVariable("dateUntil", niceDateFormatter.format(dateUntil))
+      for (photo <- photos) {
+        t.setVariable("pageUrl",     photo.pageUrl)
+        t.setVariable("imageUrl",    photo.imageUrl)
+        t.setVariable("title",       photo.title)
+        t.setVariable("description", photo.description)
+        t.addBlock("photo")
+      }
+      return t.generateOutput
+    }
+
+    def mail(to: String, subject: String, body: String) {
+      val props = System.getProperties()
+      val conf  = new Configuration("config.yml")
+      props.put("mail.smtp.host", conf.get("Mail", "host"))
+      props.put("mail.smtp.port", conf.get("Mail", "port"))
+
+      val session = Session.getDefaultInstance(props, null)
+      val message = new MimeMessage(session)
+      message.setFrom(new InternetAddress(conf.get("Mail", "from")))
+      message.addRecipient(Message.RecipientType.TO, new InternetAddress(to))
+      message.setSubject(subject)
+      message.setContent(body, "text/html")
+      Transport.send(message)
+    }
+
     def main(args: Array[String]) {
       val userId           = args(0)         // 24881879@N00
       var referenceDate    = new Date        // today by default
+      var mailRecipient    = ""
       val rfc3339Formatter = new SimpleDateFormat("yyyy-MM-dd")
       if (args.size > 1) {
         referenceDate = rfc3339Formatter.parse(args(1))
+      }
+      if (args.size > 2) {
+        mailRecipient = args(2)
       }
 
       val engine = new SearchEngine()
@@ -131,20 +167,13 @@ package FlickrMemories {
       val dateSinceString = rfc3339Formatter.format(dateSince)
       val dateUntilString = rfc3339Formatter.format(dateUntil)
 
-      val t = new MiniTemplator(TEMPLATE_PATH)
-      val niceDateFormatter = new SimpleDateFormat("MMM d")
-      val yearDateFormatter = new SimpleDateFormat("yyyy")
-      t.setVariable("dateSince", niceDateFormatter.format(dateSince))
-      t.setVariable("yearSince", yearDateFormatter.format(dateSince))
-      t.setVariable("dateUntil", niceDateFormatter.format(dateUntil))
-      for (photo <- engine.searchByUserAndDateRange(userId, dateSinceString, dateUntilString)) {
-        t.setVariable("pageUrl",     photo.pageUrl)
-        t.setVariable("imageUrl",    photo.imageUrl)
-        t.setVariable("title",       photo.title)
-        t.setVariable("description", photo.description)
-        t.addBlock("photo")
+      val output = htmlForPhotos(engine.searchByUserAndDateRange(userId, dateSinceString, dateUntilString), dateSince, dateUntil)
+      println(output)
+      if (mailRecipient != "") {
+        mail(mailRecipient,
+             "FlickMemories " + dateSinceString + " - " + dateUntilString,
+             output)
       }
-      println(t.generateOutput)
     }
   }
 }

@@ -11,9 +11,12 @@ learn from, or (2) a polished/well-maintained code.
 BTW, I know there's already a service that does something similar,
 probably much better, but as I said I wanted to learn some Scala ;-)
 
-To run this, you'll need
-[scalaj-http](https://github.com/scalaj/scalaj-http) and
-[MiniTemplator](http://www.source-code.biz/MiniTemplator/).
+To run this, you'll need:
+
+* [scalaj-http](https://github.com/scalaj/scalaj-http)
+* [MiniTemplator](http://www.source-code.biz/MiniTemplator/)
+* [JavaMail](http://www.gnu.org/software/classpathx/javamail/javamail.html)
+* [snakeyaml](http://code.google.com/p/snakeyaml/)
 
 Any comments, particularly about the Scala code or nice tools I should
 be using (build system, documentation, unit testing, etc.) more than
@@ -31,3 +34,11 @@ E.g.:
 
     scala FlickrMemories.App 24881879@N00            >pictures.html
     scala FlickrMemories.App 24881879@N00 2010-11-13 >pictures.html
+
+If you want to send the result via e-mail, you have to configure the
+outgoing SMTP server (ie. copy `config.yml-sample` to `config.yml` and
+set appropriate values for the different configuration keys). Then,
+you can just specify an e-mail address as an extra parameter at the
+end, like so:
+
+    scala FlickrMemories.App 24881879@N00 2010-11-13 emanchado@demiurgo.org
