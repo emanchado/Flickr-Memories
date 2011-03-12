@@ -1,0 +1,4 @@
+Mail:
+  host: smtp.example.com
+  port: "25"
+  from: Flickr Memories <noreply@example.com>
