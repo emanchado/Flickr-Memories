@@ -5,8 +5,40 @@ import java.util.{Calendar,Date}
 import java.text.SimpleDateFormat
 // Template system
 import biz.source_code.miniTemplator.MiniTemplator
+// Configuration (in YAML; configgy is just annoying)
+import org.yaml.snakeyaml.Yaml
+// Mail
+import javax.mail._
+import javax.mail.internet.{InternetAddress,MimeMessage}
+
 
 package FlickrMemories {
+  class Configuration(var file: String = null) {
+    var configuration : java.util.LinkedHashMap
+                            [String, java.util.LinkedHashMap[String,
+                                                             String]] =
+                                                               new java.util.LinkedHashMap
+
+    if (file != null)
+      configuration = readFromFile(file)
+
+    def readFromFile(file: String) : java.util.LinkedHashMap[String, java.util.LinkedHashMap[String, String]] = {
+      readFromString(scala.io.Source.fromFile(file).mkString)
+    }
+
+    def readFromString(yamlString: String) : java.util.LinkedHashMap[String, java.util.LinkedHashMap[String, String]] = {
+      val yaml = new Yaml
+      return yaml.load(yamlString).
+                    asInstanceOf[java.util.LinkedHashMap
+                                 [String, java.util.LinkedHashMap[String,
+                                                                  String]]]
+    }
+
+    def get(key: String, subkey: String) : String = {
+      configuration.get(key).get(subkey)
+    }
+  }
+
   class Photo(var id: String, var secret: String, var userId: String,
               var farmId: String, var serverId: String, var title: String) {
     var _description : String = null
