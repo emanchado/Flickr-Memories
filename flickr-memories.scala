@@ -168,11 +168,12 @@ package FlickrMemories {
       val dateUntilString = rfc3339Formatter.format(dateUntil)
 
       val output = htmlForPhotos(engine.searchByUserAndDateRange(userId, dateSinceString, dateUntilString), dateSince, dateUntil)
-      println(output)
       if (mailRecipient != "") {
         mail(mailRecipient,
              "FlickMemories " + dateSinceString + " - " + dateUntilString,
              output)
+      } else {
+        println(output)
       }
     }
   }
