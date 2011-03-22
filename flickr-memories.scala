@@ -54,7 +54,7 @@ package FlickrMemories {
 
     def extractDescriptionFromFlickResponse(xml: String) : String = {
       val dom = XML.loadString(xml)
-      return ((dom \\ "PHOTO")(0) \ "description").text
+      return ((dom \\ "PHOTO")(0) \ "DESCRIPTION").text
     }
 
     def fetchPhotoDescription : String = {
