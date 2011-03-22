@@ -19,6 +19,9 @@ To run this, you'll need:
 * [JavaMail](http://www.gnu.org/software/classpathx/javamail/javamail.html)
 * [snakeyaml](http://code.google.com/p/snakeyaml/)
 
+If you want to run the tests, you'll also need the
+[ScalaTest](http://www.scalatest.org/) library.
+
 Any comments, particularly about the Scala code or nice tools I should
 be using (build system, documentation, unit testing, etc.) more than
 welcome!
