@@ -108,10 +108,10 @@ package FlickrMemories {
     val API_KEY       = "30c195ccce757cd281132f0bef44de0d"
     val TEMPLATE_PATH = "template.html"
 
-    def findThisWeekLastYear(referenceDate: Date) : (Date, Date) = {
+    def findThisWeekInPastYear(referenceDate: Date, numberOfYears: Int = 1) : (Date, Date) = {
       val c = Calendar.getInstance
       c.setTime(referenceDate)
-      c.add(Calendar.YEAR, -1)
+      c.add(Calendar.YEAR, -1 * numberOfYears)
       while (c.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
         c.add(Calendar.DATE, -1)
       }
@@ -167,17 +167,33 @@ package FlickrMemories {
 
       val engine = new SearchEngine()
 
-      val (dateSince, dateUntil) = findThisWeekLastYear(referenceDate)
-      val dateSinceString = rfc3339Formatter.format(dateSince)
-      val dateUntilString = rfc3339Formatter.format(dateUntil)
+      var years = 1
+      var picsFound = false
+      do {
+        val (dateSince, dateUntil) = findThisWeekInPastYear(referenceDate,
+                                                            years)
+        val dateSinceString = rfc3339Formatter.format(dateSince)
+        val dateUntilString = rfc3339Formatter.format(dateUntil)
 
-      val output = htmlForPhotos(engine.searchByUserAndDateRange(userId, dateSinceString, dateUntilString), dateSince, dateUntil)
-      if (mailRecipient != "") {
-        mail(mailRecipient,
-             "FlickMemories " + dateSinceString + " - " + dateUntilString,
-             output)
-      } else {
-        println(output)
+        val photos = engine.searchByUserAndDateRange(userId, dateSinceString, dateUntilString)
+        if (photos.length > 0) {
+          picsFound = true
+          val output = htmlForPhotos(photos, dateSince, dateUntil)
+          if (mailRecipient != "") {
+            mail(mailRecipient,
+                 "FlickMemories " + dateSinceString + " - " + dateUntilString,
+                 output)
+          } else {
+            println(output)
+          }
+        } else {
+          println("No pics found " + years + " years ago")
+        }
+        years += 1
+      } while (years < 6 && !picsFound)
+
+      if (! picsFound && mailRecipient == "") {
+        println("Didn't find any photos for " + args(1))
       }
     }
   }
