@@ -3,10 +3,11 @@ Flickr Memories
 
 This is a *very* simple utility to fetch pictures from a week a year
 ago from a given Flickr account. It generates a static web page that
-you can load in any browser to see the pictures. It's written in
-Scala, and part of the point of writing it in the first place was
-learning some Scala, so don't expect (1) idiomatic Scala code you can
-learn from, or (2) a polished/well-maintained code.
+you can load in any browser to see the pictures, or alternatively it
+can send that webpage as an e-mail to a chosen e-mail address. It's
+written in Scala, and part of the point of writing it in the first
+place was learning some Scala, so don't expect (1) idiomatic Scala
+code you can learn from, or (2) a polished/well-maintained code.
 
 BTW, I know there's already a service that does something similar,
 probably much better, but as I said I wanted to learn some Scala ;-)
