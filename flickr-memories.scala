@@ -149,7 +149,7 @@ package FlickrMemories {
       message.setFrom(new InternetAddress(conf.get("Mail", "from")))
       message.addRecipient(Message.RecipientType.TO, new InternetAddress(to))
       message.setSubject(subject)
-      message.setContent(body, "text/html")
+      message.setContent(body, "text/html; charset=\"utf-8\"")
       Transport.send(message)
     }
 
