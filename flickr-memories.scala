@@ -186,8 +186,6 @@ package FlickrMemories {
           } else {
             println(output)
           }
-        } else {
-          println("No pics found " + years + " years ago")
         }
         years += 1
       } while (years < 6 && !picsFound)
