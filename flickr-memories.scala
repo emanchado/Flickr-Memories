@@ -4,7 +4,9 @@ import scala.xml._
 import java.util.{Calendar,Date}
 import java.text.SimpleDateFormat
 // Template system
-import biz.source_code.miniTemplator.MiniTemplator
+import java.io.StringWriter
+import org.apache.velocity.app.Velocity
+import org.apache.velocity.VelocityContext
 // Configuration (in YAML; configgy is just annoying)
 import org.yaml.snakeyaml.Yaml
 // Mail
@@ -122,20 +124,17 @@ package FlickrMemories {
     }
 
     def htmlForPhotos(photos: Seq[Photo], dateSince: Date, dateUntil: Date) : String = {
-      val t = new MiniTemplator(TEMPLATE_PATH)
+      Velocity.init
+      val context = new VelocityContext
       val niceDateFormatter = new SimpleDateFormat("MMM d")
       val yearDateFormatter = new SimpleDateFormat("yyyy")
-      t.setVariable("dateSince", niceDateFormatter.format(dateSince))
-      t.setVariable("yearSince", yearDateFormatter.format(dateSince))
-      t.setVariable("dateUntil", niceDateFormatter.format(dateUntil))
-      for (photo <- photos) {
-        t.setVariable("pageUrl",     photo.pageUrl)
-        t.setVariable("imageUrl",    photo.imageUrl)
-        t.setVariable("title",       photo.title)
-        t.setVariable("description", photo.description)
-        t.addBlock("photo")
-      }
-      return t.generateOutput
+      context.put("dateSince", niceDateFormatter.format(dateSince))
+      context.put("yearSince", yearDateFormatter.format(dateSince))
+      context.put("dateUntil", niceDateFormatter.format(dateUntil))
+      context.put("photos",    photos.toArray)
+      val w = new StringWriter
+      Velocity.mergeTemplate("template.vm", context, w)
+      return w.toString
     }
 
     def mail(to: String, subject: String, body: String) {

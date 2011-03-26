@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Weekly Flickr pictures from ${dateSince} until ${dateUntil}</title>
+    <title>Weekly Flickr pictures from $dateSince until $dateUntil</title>
     <style>
       body {
         text-align: center;
@@ -21,16 +21,17 @@
     </style>
   </head>
   <body>
-    <h1>Week ${dateSince} - ${dateUntil}, ${yearSince}</h1>
-<!-- $BeginBlock photo -->
+    <h1>Week $dateSince - $dateUntil, $yearSince</h1>
+
+#foreach ($photo in $photos)
     <div class="photo">
-      <a href="${pageUrl}">
-        <img alt="${title}" src="${imageUrl}" />
+      <a href="$photo.pageUrl()">
+        <img alt="$photo.title()" src="$photo.imageUrl()" />
       </a>
       <div class="description">
-        <em>${description}</em>
+        <em>$photo.description()</em>
       </div>
     </div>
-<!-- $EndBlock photo -->
+#end
   </body>
 </html>
