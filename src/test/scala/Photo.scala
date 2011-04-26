@@ -1,7 +1,7 @@
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 
-import FlickrMemories._
+import org.demiurgo.FlickrMemories._
 
 class PhotoSpec extends FlatSpec with ShouldMatchers {
   val p = new Photo("5317414257", "6215a6a128", "24881879@N00",

@@ -1,7 +1,7 @@
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 
-import FlickrMemories._
+import org.demiurgo.FlickrMemories._
 
 class SearchEngineSpec extends FlatSpec with ShouldMatchers {
   val se = new SearchEngine

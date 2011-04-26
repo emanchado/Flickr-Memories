@@ -21,24 +21,27 @@ To run this, you'll need:
 * [snakeyaml](http://code.google.com/p/snakeyaml/)
 
 If you want to run the tests, you'll also need the
-[ScalaTest](http://www.scalatest.org/) library.
+[ScalaTest](http://www.scalatest.org/) library. To compile, run or
+test the code, you must have
+[sbt](http://code.google.com/p/simple-build-tool/).
 
 Any comments, particularly about the Scala code or nice tools I should
 be using (build system, documentation, unit testing, etc.) more than
 welcome!
 
-After compiling the source, you can execute the utility by typing:
+After compiling the source, you can execute the utility by typing
+(make sure you have a correct `CLASSPATH`!):
 
-    scala FlickrMemories.App <your Flickr NSID> >pictures.html
+    scala org.demiurgo.FlickrMemories.App <your Flickr NSID> >pictures.html
 
 you can specify a different reference date (as opposed to "today"):
 
-    scala FlickrMemories.App <your Flickr NSID> <yyyy-mm-dd> >pictures.html
+    scala org.demiurgo.FlickrMemories.App <your Flickr NSID> <yyyy-mm-dd> >pictures.html
 
 E.g.:
 
-    scala FlickrMemories.App 24881879@N00            >pictures.html
-    scala FlickrMemories.App 24881879@N00 2010-11-13 >pictures.html
+    scala org.demiurgo.FlickrMemories.App 24881879@N00            >pictures.html
+    scala org.demiurgo.FlickrMemories.App 24881879@N00 2010-11-13 >pictures.html
 
 If you want to send the result via e-mail, you have to configure the
 outgoing SMTP server (ie. copy `config.yml-sample` to `config.yml` and
@@ -46,4 +49,4 @@ set appropriate values for the different configuration keys). Then,
 you can just specify an e-mail address as an extra parameter at the
 end, like so:
 
-    scala FlickrMemories.App 24881879@N00 2010-11-13 emanchado@demiurgo.org
+    scala org.demiurgo.FlickrMemories.App 24881879@N00 2010-11-13 emanchado@demiurgo.org
