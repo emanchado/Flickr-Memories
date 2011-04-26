@@ -30,7 +30,8 @@ be using (build system, documentation, unit testing, etc.) more than
 welcome!
 
 After compiling the source, you can execute the utility by typing
-(make sure you have a correct `CLASSPATH`!):
+(make sure you have a correct `CLASSPATH`, like
+`lib/*:target/scala_2.8.1/classes` or similar!):
 
     scala org.demiurgo.FlickrMemories.App <your Flickr NSID> >pictures.html
 
