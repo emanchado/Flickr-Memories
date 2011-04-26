@@ -2,9 +2,7 @@
 import java.util.{Calendar,Date}
 import java.text.SimpleDateFormat
 // Template system
-import java.io.StringWriter
-import org.apache.velocity.app.Velocity
-import org.apache.velocity.VelocityContext
+import org.fusesource.scalate._
 // Mail
 import javax.mail._
 import javax.mail.internet.{InternetAddress,MimeMessage}
@@ -28,17 +26,15 @@ package org.demiurgo.FlickrMemories {
     }
 
     def htmlForPhotos(photos: Seq[Photo], dateSince: Date, dateUntil: Date) : String = {
-      Velocity.init
-      val context = new VelocityContext
-      val niceDateFormatter = new SimpleDateFormat("MMM d")
-      val yearDateFormatter = new SimpleDateFormat("yyyy")
-      context.put("dateSince", niceDateFormatter.format(dateSince))
-      context.put("yearSince", yearDateFormatter.format(dateSince))
-      context.put("dateUntil", niceDateFormatter.format(dateUntil))
-      context.put("photos",    photos.toArray)
-      val w = new StringWriter
-      Velocity.mergeTemplate("template.vm", context, w)
-      return w.toString
+      val niceDateFmt = new SimpleDateFormat("MMM d")
+      val yearDateFmt = new SimpleDateFormat("yyyy")
+
+      val engine = new TemplateEngine
+      return engine.layout("template.ssp",
+                           Map("dateSince" -> niceDateFmt.format(dateSince),
+                               "yearSince" -> yearDateFmt.format(dateSince),
+                               "dateUntil" -> niceDateFmt.format(dateUntil),
+                               "photos"    -> photos.toArray))
     }
 
     def mail(to: String, subject: String, body: String) {

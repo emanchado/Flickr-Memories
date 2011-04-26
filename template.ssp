@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Weekly Flickr pictures from $dateSince until $dateUntil</title>
+    <title>Weekly Flickr pictures from <%= dateSince %> until <%= dateUntil %></title>
     <style>
       body {
         text-align: center;
@@ -21,15 +21,15 @@
     </style>
   </head>
   <body>
-    <h1>Week $dateSince - $dateUntil, $yearSince</h1>
+    <h1>Week <%= dateSince %> - <%= dateUntil %>, <%= yearSince %></h1>
 
-#foreach ($photo in $photos)
+#for (photo <- photos)
     <div class="photo">
-      <a href="$photo.pageUrl()">
-        <img alt="$photo.title()" src="$photo.imageUrl()" />
+      <a href="<%= photo.pageUrl %>">
+        <img alt="<%= photo.title %>" src="<%= photo.imageUrl %>" />
       </a>
       <div class="description">
-        <em>$photo.description()</em>
+        <em><%= photo.description %></em>
       </div>
     </div>
 #end

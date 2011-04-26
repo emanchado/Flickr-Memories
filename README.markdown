@@ -16,7 +16,7 @@ probably much better, but as I said I wanted to learn some Scala ;-)
 To run this, you'll need:
 
 * [scalaj-http](https://github.com/scalaj/scalaj-http)
-* [Velocity](http://velocity.apache.org/)
+* [Scalate](http://scalate.fusesource.org/)
 * [JavaMail](http://www.gnu.org/software/classpathx/javamail/javamail.html)
 * [snakeyaml](http://code.google.com/p/snakeyaml/)
 
