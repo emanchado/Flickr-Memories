@@ -22,12 +22,10 @@ To run this, you'll need:
 
 If you want to run the tests, you'll also need the
 [ScalaTest](http://www.scalatest.org/) library. To compile, run or
-test the code, you must have
+test the code, you can use
 [sbt](http://code.google.com/p/simple-build-tool/).
 
-Any comments, particularly about the Scala code or nice tools I should
-be using (build system, documentation, unit testing, etc.) more than
-welcome!
+Comments, particularly about the code or the tools, more than welcome!
 
 After compiling the source, you can execute the utility by typing
 (make sure you have a correct `CLASSPATH`, like
