@@ -1,3 +1,7 @@
+<%@ var photos:(Array[org.demiurgo.FlickrMemories.Photo]) %>
+<%@ var dateSince:(String) %>
+<%@ var dateUntil:(String) %>
+<%@ var yearSince:(String) %>
 <!DOCTYPE html>
 <html>
   <head>
