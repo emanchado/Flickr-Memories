@@ -49,3 +49,5 @@ you can just specify an e-mail address as an extra parameter at the
 end, like so:
 
     scala org.demiurgo.FlickrMemories.App 24881879@N00 2010-11-13 emanchado@demiurgo.org
+
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=emanchado&url=https://github.com/emanchado/Flickr-Memories&title=Flickr Memories&language=en_GB&tags=github&category=software)
