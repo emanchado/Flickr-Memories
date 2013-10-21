@@ -3,7 +3,7 @@ DEPRECATED
 
 This program is deprecated. It probably doesn't work anymore on more recent versions of Scala anyway.
 
-
+For a working, maintained, Clojure version of this program, see [clj-flickr-memories](https://github.com/emanchado/clj-flickr-memories).
 
 
 
